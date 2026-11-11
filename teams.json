@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "eventId": 1,
+    "eventTitle": "Garuda Hacks 6.0 - Southeast Asia Hackathon",
+    "name": "Aditya Pratama",
+    "myRole": "Frontend (React / Next.js)",
+    "neededRole": "UI/UX Designer & Backend Developer (Node.js/Go)",
+    "contact": "081234567891",
+    "message": "Halo! Kami lagi bentuk tim untuk Garuda Hacks track FinTech / AI. Ide produk dan validasi problem sudah ada, tinggal eksekusi prototipe 36 jam. Target juara bareng!",
+    "createdAt": "2026-11-10"
+  },
+  {
+    "id": 2,
+    "eventId": 2,
+    "eventTitle": "COMPFEST 17 - Software Engineering Hackathon",
+    "name": "Sarah Salsabila",
+    "myRole": "UI/UX Designer & Pitch Deck",
+    "neededRole": "Fullstack Developer / Mobile Dev (Flutter)",
+    "contact": "085711223344",
+    "message": "Hai! Aku designer mau ikut COMPFEST Hackathon Fasilkom UI. Desain wireframe sistem edukasi inklusif udah siap, cari developer yang santai tapi komitmen sampai submit.",
+    "createdAt": "2026-11-11"
+  },
+  {
+    "id": 3,
+    "eventId": 3,
+    "eventTitle": "Arkavidia 9.0 - Informatics Festival Hackathon",
+    "name": "Bagas Kurniawan",
+    "myRole": "Backend Developer (FastAPI / PostgreSQL)",
+    "neededRole": "Frontend Developer (Vue / Tailwind)",
+    "contact": "082199887711",
+    "message": "Cari 1 orang teman frontend developer untuk kolaborasi di Arkavidia ITB. Arsitektur API dan database sudah mulai dirancang. Gaspol!",
+    "createdAt": "2026-11-09"
+  },
+  {
+    "id": 4,
+    "eventId": 6,
+    "eventTitle": "HACKJAK 2026 - Jakarta Smart City Hackathon",
+    "name": "Fikri Ramadhan",
+    "myRole": "Data Analyst / Python",
+    "neededRole": "Web Developer & UI/UX",
+    "contact": "081377889900",
+    "message": "Mau olah open data transportasi Jakarta untuk bikin dashboard prediksi armada TransJakarta. Butuh teman frontend/UI buat bikin tampilan web interaktif.",
+    "createdAt": "2026-11-11"
+  }
+]

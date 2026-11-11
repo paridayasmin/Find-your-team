@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(59, 130, 246, 0.8); }
+}
+
+.glow-btn { animation: pulseGlow 3s infinite; }
+.glass-nav { background: rgba(11, 9, 26, 0.85); backdrop-filter: blur(12px); }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #0b091a; }
+::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #3b82f6; }

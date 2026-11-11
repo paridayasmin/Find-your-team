@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CariLomba ✨ - Portal Lomba & Teman Satu Tim</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['"Plus Jakarta Sans"', 'sans-serif'] },
+          colors: { darkbg: '#0b091a', cardbg: '#15112a' }
+        }
+      }
+    }
+  </script>
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-darkbg text-slate-100 min-h-screen flex flex-col font-sans pb-20">
+
+  <!-- Navbar -->
+  <header class="glass-nav sticky top-0 z-40 border-b border-purple-900/50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center gap-3">
+      <div class="flex items-center gap-3">
+        <h1 class="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent flex items-center gap-2 cursor-pointer" onclick="switchTab('events')">
+          <i class="fa-solid fa-trophy text-amber-400 text-lg sm:text-xl"></i> CariLomba ✨
+        </h1>
+        <span class="hidden md:inline-block text-xs bg-purple-950/80 border border-purple-800 text-purple-300 font-semibold px-2.5 py-1 rounded-full">
+          Portal Hackathon & Kompetisi
+        </span>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <button onclick="openTeamModal()" class="bg-purple-950/80 hover:bg-purple-900 text-purple-200 border border-purple-700/60 font-bold px-3.5 sm:px-4 py-2 rounded-full text-xs sm:text-sm transition flex items-center gap-1.5 shadow-md">
+          <i class="fa-solid fa-users text-pink-400"></i> <span class="hidden sm:inline">Cari</span> Teman
+        </button>
+        <button onclick="openModal()" class="glow-btn bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm transition flex items-center shadow-lg shadow-purple-600/30">
+          <i class="fa-solid fa-plus mr-1.5"></i> Post Lomba
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Konten Utama -->
+  <main class="max-w-7xl mx-auto px-4 mt-8 w-full">
+    <!-- Banner Utama & Tabs Navigasi -->
+    <div class="bg-gradient-to-r from-purple-900/40 via-purple-900/20 to-blue-900/30 border border-purple-800/50 rounded-3xl p-6 sm:p-8 mb-8 relative overflow-hidden shadow-2xl">
+      <div class="absolute -right-8 -bottom-8 opacity-10 pointer-events-none select-none">
+        <i class="fa-solid fa-code text-9xl text-purple-400"></i>
+      </div>
+      
+      <div class="relative z-10">
+        <div class="inline-flex items-center gap-2 bg-purple-900/40 border border-purple-700/50 text-purple-200 text-xs font-semibold px-3 py-1 rounded-full mb-3">
+          <i class="fa-solid fa-fire text-pink-400"></i> Hackathon & Kompetisi Populer 2026
+        </div>
+        <h2 id="bannerTitle" class="text-2xl sm:text-3xl font-extrabold text-white mb-2">Eksplor Hackathon & Temukan Tim Impianmu! 🚀</h2>
+        <p id="bannerDesc" class="text-purple-200/90 mb-6 max-w-2xl text-sm sm:text-base">Jelajahi kompetisi bergengsi seperti Garuda Hacks, COMPFEST UI, Arkavidia ITB, Find IT UGM, atau posting untuk mencari partner satu frekuensi.</p>
+        
+        <!-- Search & Filter Bar -->
+        <div id="eventsFilterBar" class="grid grid-cols-1 md:grid-cols-12 gap-3 mb-5">
+          <div class="md:col-span-6 relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-purple-400 text-sm"></i>
+            <input type="text" id="searchInput" onkeyup="filterEvents()" placeholder="Cari nama lomba, hackathon, kota, atau penyelenggara..." class="w-full bg-slate-900/80 border border-purple-700/50 rounded-xl pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-purple-400 transition placeholder:text-purple-300/40">
+          </div>
+          <div class="md:col-span-3">
+            <select id="categoryFilter" onchange="filterEvents()" class="w-full bg-slate-900/80 border border-purple-700/50 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-400 transition">
+              <option value="ALL">Semua Kategori</option>
+              <option value="Web Development">Web Dev / Hackathon</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Business Plan">Business Plan</option>
+              <option value="Data Science">Data Science</option>
+              <option value="Karya Tulis Ilmiah">Karya Tulis Ilmiah</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+          <div class="md:col-span-3">
+            <select id="feeFilter" onchange="filterEvents()" class="w-full bg-slate-900/80 border border-purple-700/50 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-purple-400 transition">
+              <option value="ALL">Semua Biaya</option>
+              <option value="Gratis">Gratis (Free)</option>
+              <option value="Berbayar">Berbayar</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Filter Bar untuk Cari Teman (muncul saat tab teams aktif) -->
+        <div id="teamsFilterBar" class="hidden grid-cols-1 md:grid-cols-12 gap-3 mb-5">
+          <div class="md:col-span-8 relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-purple-400 text-sm"></i>
+            <input type="text" id="searchTeamInput" onkeyup="filterTeams()" placeholder="Cari berdasarkan nama lomba, role yang dicari, atau keahlian..." class="w-full bg-slate-900/80 border border-purple-700/50 rounded-xl pl-11 pr-4 py-3 text-sm text-white focus:outline-none focus:border-purple-400 transition placeholder:text-purple-300/40">
+          </div>
+          <div class="md:col-span-4">
+            <button onclick="openTeamModal()" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg shadow-purple-600/30 flex items-center justify-center gap-2">
+              <i class="fa-solid fa-user-plus"></i> Buat Postingan Cari Teman
+            </button>
+          </div>
+        </div>
+
+        <!-- Switcher Tab Sederhana -->
+        <div class="flex flex-wrap gap-2 pt-4 border-t border-purple-800/40">
+          <button id="tabEventsBtn" onclick="switchTab('events')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-600/30">
+            <i class="fa-solid fa-trophy"></i> Daftar Kompetisi & Hackathon 
+            <span id="tabEventsCount" class="bg-black/30 px-2 py-0.5 rounded-full text-[11px]">0</span>
+          </button>
+          <button id="tabTeamsBtn" onclick="switchTab('teams')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 bg-slate-900/80 text-purple-300 hover:text-white border border-purple-800/60">
+            <i class="fa-solid fa-user-group text-pink-400"></i> Cari Teman Lomba 
+            <span id="tabTeamsCount" class="bg-purple-950 px-2 py-0.5 rounded-full text-[11px] text-pink-300">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW 1: DAFTAR LOMBA -->
+    <section id="eventsSection">
+      <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+        <h3 class="text-xl font-bold flex items-center gap-2">
+          <i class="fa-solid fa-fire text-pink-500"></i> Hackathon & Lomba Aktif
+        </h3>
+        <span id="eventCount" class="text-xs font-semibold bg-purple-900/50 text-purple-300 border border-purple-800/60 px-3.5 py-1.5 rounded-full">
+          Memuat lomba...
+        </span>
+      </div>
+      <div id="cardsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- VIEW 2: CARI TEMAN LOMBA -->
+    <section id="teamsSection" class="hidden">
+      <div class="flex flex-wrap justify-between items-center gap-3 mb-6">
+        <div>
+          <h3 class="text-xl font-bold flex items-center gap-2">
+            <i class="fa-solid fa-users text-cyan-400"></i> Teman Sedang Mencari Tim
+          </h3>
+          <p class="text-xs text-purple-300/70 mt-1">Hubungi langsung via WhatsApp atau buat postingan kamu sendiri!</p>
+        </div>
+        <button onclick="openTeamModal()" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold px-4 py-2 rounded-full text-xs transition flex items-center gap-1.5 shadow-md shadow-purple-600/20">
+          <i class="fa-solid fa-plus"></i> Post Cari Teman
+        </button>
+      </div>
+      <div id="teamsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+  </main>
+
+  <!-- Modal Form Tambah / Edit Lomba -->
+  <div id="eventModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-cardbg border border-purple-700/50 rounded-3xl w-full max-w-xl shadow-2xl flex flex-col max-h-[90vh]">
+      <div class="px-6 py-4 border-b border-purple-900/50 flex justify-between items-center bg-purple-950/20">
+        <h3 id="modalTitle" class="font-bold text-white text-lg flex items-center gap-2">
+          <i class="fa-solid fa-trophy text-amber-400"></i> Post Info Lomba
+        </h3>
+        <button type="button" onclick="closeModal()" class="w-8 h-8 rounded-full bg-purple-900/40 text-purple-300 hover:text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+      
+      <form id="eventForm" onsubmit="handleFormSubmit(event)" class="p-6 space-y-4 overflow-y-auto">
+        <input type="hidden" id="eventId">
+
+        <div>
+          <label class="text-xs text-purple-300 font-bold mb-1 block">Judul Lomba / Hackathon *</label>
+          <input type="text" id="title" required placeholder="Contoh: Garuda Hacks 6.0" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Penyelenggara *</label>
+            <input type="text" id="organizer" required placeholder="Contoh: Fasilkom UI / HMIF ITB" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          </div>
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Kategori *</label>
+            <select id="category" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+              <option value="Web Development">Web Development / Hackathon</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Business Plan">Business Plan</option>
+              <option value="Data Science">Data Science</option>
+              <option value="Karya Tulis Ilmiah">Karya Tulis Ilmiah</option>
+              <option value="Game Development">Game Development</option>
+              <option value="Desain Grafis">Desain Grafis</option>
+              <option value="Cyber Security">Cyber Security</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Tingkat Peserta *</label>
+            <input type="text" id="level" required placeholder="Contoh: Mahasiswa & Siswa SMA" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          </div>
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Biaya Pendaftaran *</label>
+            <input type="text" id="fee" required placeholder="Contoh: Gratis atau Rp 50.000" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Total Hadiah</label>
+            <input type="text" id="prize" placeholder="Contoh: Rp 45.000.000 + Trophy" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          </div>
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Lokasi / Pelaksanaan *</label>
+            <input type="text" id="location" required placeholder="Contoh: Hybrid (Jakarta) / Online" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Deadline Pendaftaran *</label>
+            <input type="date" id="deadline" required class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          </div>
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Status Pendaftaran</label>
+            <select id="status" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+              <option value="Pendaftaran Buka">Pendaftaran Buka</option>
+              <option value="Segera Ditutup">Segera Ditutup</option>
+              <option value="Pendaftaran Tutup">Pendaftaran Tutup</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">No WhatsApp Narahubung</label>
+            <input type="text" id="contact" placeholder="08123456789" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          </div>
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Link Pendaftaran / Web Resmi</label>
+            <input type="url" id="regLink" placeholder="https://..." class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs text-purple-300 font-bold mb-1 block">URL Poster (Opsional)</label>
+          <input type="url" id="imageUrl" placeholder="https://images.unsplash.com/..." class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+        </div>
+
+        <div>
+          <label class="text-xs text-purple-300 font-bold mb-1 block">Deskripsi & Syarat Ketentuan</label>
+          <textarea id="description" rows="3" placeholder="Jelaskan mengenai tema, syarat peserta, dan timeline..." class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-purple-900/50">
+          <button type="button" onclick="closeModal()" class="px-5 py-2 text-sm font-bold text-purple-300 hover:text-white transition">Batal</button>
+          <button type="submit" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-purple-600/30 transition">
+            Simpan Lomba
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Sederhana: Post Cari Teman Lomba -->
+  <div id="teamModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-cardbg border border-purple-700/50 rounded-3xl w-full max-w-lg shadow-2xl flex flex-col max-h-[90vh]">
+      <div class="px-6 py-4 border-b border-purple-900/50 flex justify-between items-center bg-purple-950/20">
+        <h3 class="font-bold text-white text-lg flex items-center gap-2">
+          <i class="fa-solid fa-users text-pink-400"></i> Cari Teman Satu Tim
+        </h3>
+        <button type="button" onclick="closeTeamModal()" class="w-8 h-8 rounded-full bg-purple-900/40 text-purple-300 hover:text-white flex items-center justify-center transition">
+          <i class="fa-solid fa-times"></i>
+        </button>
+      </div>
+
+      <form id="teamForm" onsubmit="handleTeamSubmit(event)" class="p-6 space-y-4 overflow-y-auto">
+        <div>
+          <label class="text-xs text-purple-300 font-bold mb-1 block">Lomba / Hackathon yang Diikuti *</label>
+          <select id="teamEventSelect" required class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400"></select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Nama / Panggilan Kamu *</label>
+            <input type="text" id="teamName" required placeholder="Contoh: Dimas Aditya" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          </div>
+          <div>
+            <label class="text-xs text-purple-300 font-bold mb-1 block">Role / Keahlian Kamu *</label>
+            <input type="text" id="teamMyRole" required placeholder="Contoh: Frontend (React)" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-xs text-purple-300 font-bold mb-1 block">Role Teman yang Sedang Dicari *</label>
+          <input type="text" id="teamNeededRole" required placeholder="Contoh: UI/UX Designer, Backend (Node.js)" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+        </div>
+
+        <div>
+          <label class="text-xs text-purple-300 font-bold mb-1 block">No WhatsApp Kamu *</label>
+          <input type="text" id="teamContact" required placeholder="Contoh: 08123456789 atau 62812..." class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400">
+          <span class="text-[11px] text-purple-300/60 mt-0.5 block">Supaya calon rekan tim bisa langsung menghubungi via WhatsApp.</span>
+        </div>
+
+        <div>
+          <label class="text-xs text-purple-300 font-bold mb-1 block">Pesan Singkat / Ide Proyek</label>
+          <textarea id="teamMessage" rows="3" placeholder="Contoh: Halo! Mau bikin prototipe web tracking banjir di Jakarta, butuh teman UI/UX buat bantu mockup sebelum deadline!" class="w-full bg-slate-900 border border-purple-800 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-purple-400"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-purple-900/50">
+          <button type="button" onclick="closeTeamModal()" class="px-5 py-2 text-sm font-bold text-purple-300 hover:text-white transition">Batal</button>
+          <button type="submit" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-6 py-2.5 rounded-full text-sm font-bold shadow-lg shadow-purple-600/30 transition flex items-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i> Posting Cari Teman
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Detail Lomba Lengkap -->
+  <div id="detailModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
+    <div class="bg-cardbg border border-purple-700/50 rounded-3xl w-full max-w-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
+      <!-- Modal Header / Poster -->
+      <div class="relative h-48 sm:h-60 w-full bg-slate-950">
+        <img id="detailPoster" src="" alt="Poster Lomba" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-t from-cardbg via-cardbg/40 to-transparent"></div>
+        <button type="button" onclick="closeDetailModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 text-purple-200 hover:text-white flex items-center justify-center backdrop-blur-md transition">
+          <i class="fa-solid fa-times"></i>
+        </button>
+        <div class="absolute bottom-4 left-6 right-6">
+          <div class="flex flex-wrap gap-2 mb-2">
+            <span id="detailCategory" class="text-xs font-bold bg-purple-900/90 text-purple-200 px-3 py-1 rounded-full border border-purple-700 uppercase"></span>
+            <span id="detailFeeBadge" class="text-xs font-bold px-3 py-1 rounded-full border"></span>
+            <span id="detailStatus" class="text-xs font-bold px-3 py-1 rounded-full border"></span>
+          </div>
+          <h3 id="detailTitle" class="text-xl sm:text-2xl font-extrabold text-white leading-tight"></h3>
+          <p id="detailOrganizer" class="text-xs sm:text-sm text-purple-300 font-medium mt-1 flex items-center gap-1.5"></p>
+        </div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto space-y-5">
+        <!-- Spesifikasi Lomba -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-darkbg/80 p-4 rounded-2xl border border-purple-900/50 text-xs">
+          <div>
+            <span class="text-purple-400 block font-semibold mb-0.5"><i class="fa-solid fa-trophy text-amber-400 mr-1"></i> Hadiah</span>
+            <span id="detailPrize" class="text-white font-bold block"></span>
+          </div>
+          <div>
+            <span class="text-purple-400 block font-semibold mb-0.5"><i class="fa-solid fa-graduation-cap text-cyan-400 mr-1"></i> Jenjang</span>
+            <span id="detailLevel" class="text-white font-bold block"></span>
+          </div>
+          <div>
+            <span class="text-purple-400 block font-semibold mb-0.5"><i class="fa-solid fa-location-dot text-pink-500 mr-1"></i> Tempat</span>
+            <span id="detailLocation" class="text-white font-bold block"></span>
+          </div>
+          <div>
+            <span class="text-purple-400 block font-semibold mb-0.5"><i class="fa-solid fa-calendar-check text-emerald-400 mr-1"></i> Deadline</span>
+            <span id="detailDeadline" class="text-pink-300 font-bold block"></span>
+          </div>
+        </div>
+
+        <!-- Deskripsi -->
+        <div>
+          <h4 class="text-sm font-bold text-white mb-2 flex items-center gap-2">
+            <i class="fa-solid fa-file-lines text-purple-400"></i> Deskripsi & Informasi Kompetisi
+          </h4>
+          <p id="detailDescription" class="text-xs sm:text-sm text-purple-200/80 leading-relaxed whitespace-pre-line"></p>
+        </div>
+
+        <!-- Mini List: Teman yang cari tim untuk lomba ini -->
+        <div class="bg-darkbg/70 p-4 rounded-2xl border border-purple-900/60">
+          <div class="flex justify-between items-center mb-3">
+            <h5 class="text-xs font-bold text-purple-200 flex items-center gap-1.5">
+              <i class="fa-solid fa-users text-pink-400"></i> Teman Mencari Tim di Lomba Ini
+            </h5>
+            <button id="detailFindTeamBtn" class="text-[11px] bg-purple-900/70 hover:bg-purple-800 text-purple-200 px-3 py-1 rounded-full border border-purple-700 transition">
+              <i class="fa-solid fa-plus mr-1"></i> Gabung / Cari Tim
+            </button>
+          </div>
+          <div id="detailTeamsList" class="space-y-2 text-xs">
+            <!-- Diisi lewat javascript -->
+          </div>
+        </div>
+
+        <!-- Tombol Aksi Pendaftaran & Kontak -->
+        <div class="pt-3 border-t border-purple-900/50 flex flex-wrap gap-3 justify-end items-center">
+          <button type="button" onclick="closeDetailModal()" class="px-5 py-2.5 text-xs font-bold text-purple-300 hover:text-white transition">
+            Tutup
+          </button>
+          <a id="detailWaBtn" href="#" target="_blank" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-lg shadow-teal-500/20 flex items-center gap-2 transition">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Panitia WA
+          </a>
+          <a id="detailRegBtn" href="#" target="_blank" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-5 py-2.5 rounded-full text-xs font-bold shadow-lg shadow-purple-600/30 flex items-center gap-2 transition">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Daftar Sekarang
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
